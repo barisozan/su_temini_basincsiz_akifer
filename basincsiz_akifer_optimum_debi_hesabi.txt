@@ -1,0 +1,57 @@
+CODE
+import math
+import matplotlib.pyplot as plt
+#Veriler
+#S değer
+s = -1
+#Permeabilite
+k = 0.000297
+#Tesir yarıçapı
+R = 3000*s*((k)**(1/2))
+Qlist1 = []
+Qlist2 = []
+slist =[]
+#Kuyu çapı
+r = 0.3
+#Su derinliği
+h = 8
+#Akifer Kalınlığı
+H = 34
+#Formüller
+#1. formül
+#Q = 1.36*k*s*(2*H-s)/(math.log10(R/r))
+#2. formül
+#Qmü = 2*math.pi*r*h*((k)**(1/2))/30
+#iterasyon
+for s in range(100):
+    s = s/10
+    s = s + 1
+    R = 3000 * s * ((k) ** (1 / 2))
+    Q = 1.36 * k * s * (2 * H - s) / math.log10(R / r)
+    Qmü = 2 * math.pi * r * (H-s) * ((k) ** (1 / 2)) / 30
+    print("S = ",s)
+    print("Q değeri",Q)
+    print("Qmü değeri",Qmü)
+    Qlist1 = Qlist1 + [Q]
+    Qlist2 = Qlist2 + [Qmü]
+    slist =  slist +  [s]
+    #Optimum debi arama
+    if math.isclose(Q,Qmü, abs_tol=0.001):
+        Qopt = Qmü
+        sopt = s
+        break
+    else:
+        continue
+#Grafik çizimi
+plt.grid()
+plt.plot(slist,Qlist1)
+plt.plot(slist,Qlist2)
+plt.plot(sopt,Qopt)
+plt.ylabel("Q değeri")
+plt.xlabel("S değeri")
+plt.axhline(y=Qopt, color='black', linestyle='-')
+plt.axvline(x=sopt, color='black', linestyle='-')
+plt.show()
+#Son bilgilendirme
+print("Optimum debi için S değeri: ",sopt)
+print("Optimum debi: ",Qopt)
